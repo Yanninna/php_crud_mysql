@@ -1,0 +1,32 @@
+CREATE DATABASE IF NOT EXISTS cliente;
+
+USE cliente;
+
+CREATE TABLE `clientes` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `direccion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `dni` varchar(9) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `condicionIva` char(1) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `dni_UNIQUE` (`dni`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+CREATE TABLE `facturas` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `idCliente` int(8) DEFAULT NULL,
+  `nroFactura` int(20) DEFAULT NULL,
+  `importe` double(11,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nroFactura_UNIQUE` (`nroFactura`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+ALTER TABLE `cliente`.`facturas` 
+ADD INDEX `fx_IdCliente_idx` (`idCliente` ASC) ;
+
+ALTER TABLE `cliente`.`facturas` 
+ADD CONSTRAINT `fx_IdCliente`
+  FOREIGN KEY (`idCliente`)
+  REFERENCES `cliente`.`clientes` (`id`)
+  ON DELETE RESTRICT
+  ON UPDATE RESTRICT;
